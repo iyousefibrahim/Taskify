@@ -2,7 +2,9 @@ const express = require('express')
 const app = express();
 const morgan = require('morgan');
 const tasksRouter = require('./routes/tasks.routes');
+const cors = require('cors');
 
+app.use(cors);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use('/api/v1/tasks', tasksRouter);
