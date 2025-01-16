@@ -47,6 +47,7 @@ const userSchema = new mongoose.Schema({
             message: 'Passwords do not match!',
         },
     },
+    token: String
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) {
