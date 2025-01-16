@@ -1,13 +1,18 @@
 const express = require('express')
 const app = express();
 const morgan = require('morgan');
-const tasksRouter = require('./routes/tasks.routes');
 const cors = require('cors');
+const AppError = require('./utils/appError');
+const tasksRouter = require('./routes/tasks.routes');
+const usersRouter = require('./routes/users.routes');
 
-app.use(cors);
+
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use('/api/v1/tasks', tasksRouter);
+app.use('/api/v1/users', usersRouter);
+
 
 // Global Middleware for not found routes
 app.all('*', (req, res, next) => {
@@ -16,9 +21,9 @@ app.all('*', (req, res, next) => {
 
 // Global Error Middleware
 app.use((error, req, res, next) => {
-    res.status(error.status || 500).json({
-        status: error.status ? 'fail' : 'error',
-        message: error.message || 'Something went wrong!'
+    res.status(error.statusCode || 500).json({
+        status: error.status || 'error',
+        message: error.message || 'Something went wrong!',
     });
 });
 
