@@ -48,10 +48,15 @@ exports.getTaskById = asyncWrapper(async (req, res, next) => {
 
 exports.createTask = asyncWrapper(async (req, res, next) => {
 
+    if (!req.body.name || !req.body.description) {
+        const error = AppError.create('Name and description are required', 400);
+        return next(error);
+    }
+
     const task = await Task.create({
         name: req.body.name,
         description: req.body.description,
-        completed: req.body.completed
+        completed: req.body.completed || false,
     });
 
     res.status(201).json({
@@ -62,6 +67,12 @@ exports.createTask = asyncWrapper(async (req, res, next) => {
 });
 
 exports.updateTaskById = asyncWrapper(async (req, res, next) => {
+
+
+    if (!req.body.name && !req.body.description && req.body.completed === undefined) {
+        const error = AppError.create('At least one field (name, description, completed) is required to update', 400);
+        return next(error);
+    }
 
     const id = req.params.id;
     const task = await Task.findByIdAndUpdate(
