@@ -4,17 +4,25 @@ const AppError = require('../utils/appError');
 
 exports.getAllTasks = asyncWrapper(async (req, res, next) => {
 
-    const tasks = await Task.find().select('-__v');
+    const options = {
+        page: req.query.page || 1,
+        limit: 10,
+        sort: { createdAt: -1 },
+    };
 
-    if (tasks.length === 0) {
+    const tasks = await Task.paginate({}, options);
+
+    if (tasks.docs.length === 0) {
         const error = AppError.create('No Tasks Found!', 404);
         return next(error);
     }
 
     res.status(200).json({
         status: 'success',
-        results: tasks.length,
-        data: { tasks },
+        results: tasks.docs.length,
+        totalPages: tasks.totalPages,
+        totalResults: tasks.totalDocs,
+        data: { tasks: tasks.docs },
     });
 
 });
