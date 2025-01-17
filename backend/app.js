@@ -5,11 +5,13 @@ const cors = require('cors');
 const AppError = require('./utils/appError');
 const tasksRouter = require('./routes/tasks.routes');
 const usersRouter = require('./routes/users.routes');
+const rateLimiter = require('./middlewares/rateLimit');
 
 
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(rateLimiter);
 app.use('/api/v1/tasks', tasksRouter);
 app.use('/api/v1/users', usersRouter);
 
