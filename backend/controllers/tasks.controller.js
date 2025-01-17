@@ -1,6 +1,7 @@
 const Task = require('../models/task.model');
 const asyncWrapper = require('../middlewares/asyncWrapper');
 const AppError = require('../utils/appError');
+const mongoSanitize = require('mongo-sanitize');
 
 exports.getAllUserTasks = asyncWrapper(async (req, res, next) => {
 
@@ -50,16 +51,18 @@ exports.getTaskById = asyncWrapper(async (req, res, next) => {
 
 exports.createTask = asyncWrapper(async (req, res, next) => {
 
-    if (!req.body.name || !req.body.description) {
+    const sanitizedBody = mongoSanitize(req.body);
+
+    if (!sanitizedBody.name || !sanitizedBody.description) {
         const error = AppError.create('Name and description are required', 400);
         return next(error);
     }
 
     const userId = req.user.id;
     const task = await Task.create({
-        name: req.body.name,
-        description: req.body.description,
-        completed: req.body.completed || false,
+        name: sanitizedBody.name,
+        description: sanitizedBody.description,
+        completed: sanitizedBody.completed || false,
         createdBy: userId
     });
 
@@ -67,13 +70,13 @@ exports.createTask = asyncWrapper(async (req, res, next) => {
         status: 'success',
         data: { task }
     });
-
 });
 
 exports.updateTaskById = asyncWrapper(async (req, res, next) => {
 
+    const sanitizedBody = mongoSanitize(req.body);
 
-    if (!req.body.name && !req.body.description && req.body.completed === undefined) {
+    if (!sanitizedBody.name && !sanitizedBody.description && sanitizedBody.completed === undefined) {
         const error = AppError.create('At least one field (name, description, completed) is required to update', 400);
         return next(error);
     }
@@ -82,9 +85,9 @@ exports.updateTaskById = asyncWrapper(async (req, res, next) => {
     const task = await Task.findByIdAndUpdate(
         id,
         {
-            name: req.body.name,
-            description: req.body.description,
-            completed: req.body.completed
+            name: sanitizedBody.name,
+            description: sanitizedBody.description,
+            completed: sanitizedBody.completed
         },
         {
             new: true,
@@ -96,7 +99,6 @@ exports.updateTaskById = asyncWrapper(async (req, res, next) => {
         status: 'success',
         data: { task }
     });
-
 });
 
 exports.deleteTaskById = asyncWrapper(async (req, res, next) => {

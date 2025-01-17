@@ -4,6 +4,7 @@ const asyncWrapper = require('../middlewares/asyncWrapper');
 const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const generateJWT = require('../utils/generateJWT');
+const mongoSanitize = require('mongo-sanitize');
 
 exports.getUserById = asyncWrapper(async (req, res, next) => {
 
@@ -21,11 +22,13 @@ exports.getUserById = asyncWrapper(async (req, res, next) => {
             user
         }
     });
-
 });
 
 exports.register = asyncWrapper(async (req, res, next) => {
-    const { firstName, lastName, email, password } = req.body;
+
+    const sanitizedBody = mongoSanitize(req.body);
+
+    const { firstName, lastName, email, password } = sanitizedBody;
 
     const isExists = await User.findOne({ email });
     if (isExists) {
@@ -63,7 +66,9 @@ exports.register = asyncWrapper(async (req, res, next) => {
 
 exports.login = asyncWrapper(async (req, res, next) => {
 
-    const { email, password } = req.body;
+    const sanitizedBody = mongoSanitize(req.body);
+
+    const { email, password } = sanitizedBody;
 
     const user = await User.findOne({ email }).select('+password');
 

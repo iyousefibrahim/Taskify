@@ -7,12 +7,20 @@ const tasksRouter = require('./routes/tasks.routes');
 const usersRouter = require('./routes/users.routes');
 const rateLimiter = require('./middlewares/rateLimit');
 const compression = require('compression');
+const xssClean = require('xss-clean');
+const helmet = require('helmet');
 
 // Enable CORS
 app.use(cors());
 
+// Use helmet for securing HTTP headers
+app.use(helmet());
+
 // Use compression for response body compression
 app.use(compression());
+
+// Use xss-clean to prevent XSS attacks
+app.use(xssClean());
 
 // Enable logging in development
 if (process.env.NODE_ENV === 'development') {
