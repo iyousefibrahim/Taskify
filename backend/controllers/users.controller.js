@@ -40,7 +40,7 @@ exports.register = asyncWrapper(async (req, res, next) => {
         lastName,
         email,
         password: hashedPassword,
-        rePassword: hashedPassword
+        rePassword: hashedPassword,
     });
 
     // Generate Token

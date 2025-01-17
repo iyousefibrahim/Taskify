@@ -2,7 +2,7 @@ const Task = require('../models/task.model');
 const asyncWrapper = require('../middlewares/asyncWrapper');
 const AppError = require('../utils/appError');
 
-exports.getAllTasks = asyncWrapper(async (req, res, next) => {
+exports.getAllUserTasks = asyncWrapper(async (req, res, next) => {
 
     const options = {
         page: req.query.page || 1,
@@ -10,10 +10,13 @@ exports.getAllTasks = asyncWrapper(async (req, res, next) => {
         sort: { createdAt: -1 },
     };
 
-    const tasks = await Task.paginate({}, options);
+    const tasks = await Task.paginate(
+        { createdBy: req.user.id },
+        options
+    );
 
     if (tasks.docs.length === 0) {
-        const error = AppError.create('No Tasks Found!', 404);
+        const error = AppError.create('No Tasks Found for this user!', 404);
         return next(error);
     }
 
@@ -24,7 +27,6 @@ exports.getAllTasks = asyncWrapper(async (req, res, next) => {
         totalResults: tasks.totalDocs,
         data: { tasks: tasks.docs },
     });
-
 });
 
 exports.getTaskById = asyncWrapper(async (req, res, next) => {
@@ -53,10 +55,12 @@ exports.createTask = asyncWrapper(async (req, res, next) => {
         return next(error);
     }
 
+    const userId = req.user.id;
     const task = await Task.create({
         name: req.body.name,
         description: req.body.description,
         completed: req.body.completed || false,
+        createdBy: userId
     });
 
     res.status(201).json({
@@ -108,6 +112,27 @@ exports.deleteTaskById = asyncWrapper(async (req, res, next) => {
     res.status(204).json({
         status: 'success',
         data: null
+    });
+
+});
+
+exports.markComplete = asyncWrapper(async (req, res, next) => {
+
+    const { id } = req.params;
+
+    const task = await Task.findByIdAndUpdate(
+        id,
+        { completed: true },
+        { new: true, runValidators: true }
+    );
+
+    if (!task) {
+        return next(AppError.create('No Task Found with this ID!', 404));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: { task }
     });
 
 });
