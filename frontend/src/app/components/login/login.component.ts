@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { formIsInvalid, formIsValid } from '../../shared/utils/form-utils';
@@ -35,6 +35,7 @@ export class LoginComponent {
           this.loginSuccess = true;
           const token = res.data.token;
           localStorage.setItem('userToken', token);
+
           this.isLoading = false;
 
           setTimeout(() => {

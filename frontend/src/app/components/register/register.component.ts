@@ -8,7 +8,7 @@ import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink,NgClass],
+  imports: [ReactiveFormsModule, RouterLink, NgClass],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -25,7 +25,7 @@ export class RegisterComponent {
     firstName: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
     lastName: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
     email: [null, [Validators.required, Validators.email]],
-    password: [null, [Validators.required,Validators.minLength(5)]],
+    password: [null, [Validators.required, Validators.minLength(5)]],
     rePassword: [null, [Validators.required]]
   }, { validators: confirmPassword });
 
