@@ -98,7 +98,7 @@
                 <p class="alert alert-danger m-0">{{registerErrorMsg}}</p>
                 }
 
-                <button type="submit"
+                <button [disabled]="registerSuccess || isLoading || registerForm.invalid" type="submit"
                     class="btn btn-light m-0">
                     @if (isLoading) {
                     <div class="spinner-border text-dark" role="status">
