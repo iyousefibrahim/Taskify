@@ -1,1 +1,52 @@
-<p>register works!</p>
+<section class="vh-100 bg-opacity-50 bg-dark d-flex align-items-center">
+    <div class="container d-flex justify-content-center">
+
+        <form class="py-5 w-75" [formGroup]="registerForm" (ngSubmit)="registerSubmit()">
+            <h1 class="text-white">Register:</h1>
+
+            <div class="d-flex flex-column gap-3">
+                <div class="form-floating">
+                    <input formControlName="firstName" type="text" class="form-control" id="floatingFirstName"
+                        placeholder="FirstName">
+                    <label for="floatingFirstName">First Name</label>
+                </div>
+
+                <div class="form-floating">
+                    <input formControlName="lastName" type="text" class="form-control" id="floatingLastName"
+                        placeholder="LastName">
+                    <label for="floatingLastName">Last Name</label>
+                </div>
+
+                <div class="form-floating">
+                    <input formControlName="email" type="email" class="form-control" id="floatingEmail"
+                        placeholder="Email">
+                    <label for="floatingEmail">Email</label>
+                </div>
+
+                <div class="form-floating">
+                    <input formControlName="password" type="password" class="form-control" id="floatingPassword"
+                        placeholder="Password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+
+                <div class="form-floating">
+                    <input formControlName="rePassword" type="password" class="form-control" id="floatingrePassword"
+                        placeholder="rePassword">
+                    <label for="floatingrePassword">Confirm Password</label>
+                </div>
+
+            @if(registerSuccess){
+                <p class="alert alert-success mt-2">Register Success!</p>
+            }
+            
+            @if (registerErrorMsg && !registerSuccess) {
+                <p class="alert alert-danger mt-2">{{registerErrorMsg}}</p>
+            }
+
+            <button [disabled]="registerForm.invalid" type="submit" class="btn btn-danger mt-2 align-self-start">Register</button>
+
+            </div>
+
+        </form>
+    </div>
+</section>
