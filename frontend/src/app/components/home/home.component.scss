@@ -20,3 +20,20 @@ i:hover {
     background-color: rgb(160, 160, 160) !important;
     transition: 0.3s;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.not-allowed {
+    cursor: not-allowed;
+}
+
+.line-through {
+    text-decoration: line-through;
+    color: gray;
+}
+
+.bg-success-subtle {
+    background-color: rgba(40, 167, 69, 0.1) !important;
+}

@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TasksService } from '../../core/services/tasks.service';
 import { Tasks } from '../../core/interfaces/tasks';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgClass } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [NgbModule, ReactiveFormsModule,NgClass],
+  imports: [NgbModule, ReactiveFormsModule,NgClass,NgStyle],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

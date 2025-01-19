@@ -1,6 +1,6 @@
 <section class="min-vh-100 d-flex align-items-center">
 
-    <div class="container py-5 my-4 bg-body-secondary opacity-75 rounded-3">
+    <div class="container py-5 my-4 bg-body-secondary rounded-3">
 
         @if (allTaskCount() !== 0) {
         <div class="d-flex justify-content-between m-0 align-content-center">
@@ -9,7 +9,7 @@
         </div>
         }
         <div [ngClass]="{
-            'justify-content-center':allTaskCount() === 0
+            'justify-content-center': allTaskCount() === 0
         }" class="d-flex justify-content-end mb-2">
             <button class="btn btn-success" (click)="openModal(modal)">Create Task</button>
         </div>
@@ -42,14 +42,23 @@
         <div class="row gy-3">
             @for ( task of userTasks(); track $index) {
             <div class="col-md-4">
-                <div class="card px-3 py-4 bg-light-subtle shadow-lg rounded-4">
-                    <p class="m-0 py-2 text-center">{{ task.name }}</p>
+                <div 
+                    class="card px-3 py-4 shadow-lg rounded-4"
+                    [ngClass]="{'bg-light-subtle': !task.completed, 'bg-success-subtle': task.completed}" 
+                    [ngStyle]="{'box-shadow': task.completed ? '0 0 15px 2px green' : '0 0 15px 2px rgba(0,0,0,0.1)'}">
+                    <h3 class="m-0 py-2 text-center" 
+                       [ngClass]="{'line-through': task.completed}">
+                        {{ task.name }}
+                    </h3>
                     <h5 class="m-0 py-2">Description:</h5>
                     <p class="m-0 py-2">{{ task.description }}</p>
                     <div class="d-flex my-2 justify-content-around pb-4 align-items-center">
-                        <i class="fa-solid icon fa-check text-success bg-secondary-subtle rounded-pill"
-                            (click)="onMarkComplete(task._id)"></i>
-                        <i class="fa-solid icon-error fa-x text-danger bg-secondary-subtle rounded-pill"
+                        <i [ngClass]="{
+                        'not-allowed': task.completed 
+                        }" 
+                        class="fa-solid cursor-pointer icon fa-check text-success bg-secondary-subtle rounded-pill"
+                            (click)="!task.completed && onMarkComplete(task._id)"></i>
+                        <i class="fa-solid cursor-pointer  icon-error fa-x text-danger bg-secondary-subtle rounded-pill"
                             (click)="onDelete(task._id)"></i>
                     </div>
                 </div>
