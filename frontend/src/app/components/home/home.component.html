@@ -2,14 +2,14 @@
 
     <div class="container py-5 my-4 bg-body-secondary rounded-3">
 
-        @if (allTaskCount() !== 0) {
+        @if (userTasks().length !== 0) {
         <div class="d-flex justify-content-between m-0 align-content-center">
             <h1 class="m-0">Tasks</h1>
-            <h2 class="m-0">Current Tasks: {{allTaskCount()}}</h2>
+            <h2 class="m-0">Current Tasks: {{userTasks().length}}</h2>
         </div>
         }
         <div [ngClass]="{
-            'justify-content-center': allTaskCount() === 0
+            'justify-content-center':userTasks().length <= 0
         }" class="d-flex justify-content-end mb-2">
             <button class="btn btn-success" (click)="openModal(modal)">Create Task</button>
         </div>
