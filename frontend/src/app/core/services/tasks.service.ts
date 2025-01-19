@@ -28,7 +28,7 @@ export class TasksService {
   }
 
   markComplete(taskId: string): Observable<any> {
-    return this._HttpClient.patch(`${baseUrl}/api/v1/tasks/${taskId}`, taskId);
+    return this._HttpClient.patch(`${baseUrl}/api/v1/tasks/${taskId}/complete`, taskId);
   }
 
   deleteTask(taskId: string): Observable<any> {

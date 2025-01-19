@@ -1,0 +1,22 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #2c4c47 0%, #1e3531 100%);
+}
+
+.icon-error {
+    padding: 5px 7.5px;
+}
+
+.icon {
+    padding: 5px 7px;
+}
+
+i {
+    transition: 0.3s;
+}
+
+i:hover {
+    background-color: rgb(160, 160, 160) !important;
+    transition: 0.3s;
+}

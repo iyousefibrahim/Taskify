@@ -1,1 +1,62 @@
-<p>Test from home!!</p>
+<section class="min-vh-100 d-flex align-items-center">
+
+    <div class="container py-5 my-4 bg-body-secondary opacity-75 rounded-3">
+
+        @if (allTaskCount() !== 0) {
+        <div class="d-flex justify-content-between m-0 align-content-center">
+            <h1 class="m-0">Tasks</h1>
+            <h2 class="m-0">Current Tasks: {{allTaskCount()}}</h2>
+        </div>
+        }
+        <div [ngClass]="{
+            'justify-content-center':allTaskCount() === 0
+        }" class="d-flex justify-content-end mb-2">
+            <button class="btn btn-success" (click)="openModal(modal)">Create Task</button>
+        </div>
+
+        <ng-template #modal let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title">Create New Task</h4>
+            </div>
+            <div class="modal-body">
+
+                <form [formGroup]="taskForm" (ngSubmit)="onSubmit(modal)">
+                    <div class="mb-3">
+                        <label for="taskName" class="form-label">Task Name</label>
+                        <input id="taskName" class="form-control" formControlName="name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskDescription" class="form-label">Task Description</label>
+                        <textarea id="taskDescription" class="form-control" formControlName="description" rows="3"
+                            required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
+                        <button type="submit" class="btn btn-success" [disabled]="taskForm.invalid">Save Task</button>
+                    </div>
+                </form>
+
+            </div>
+        </ng-template>
+
+        <div class="row gy-3">
+            @for ( task of userTasks(); track $index) {
+            <div class="col-md-4">
+                <div class="card px-3 py-4 bg-light-subtle shadow-lg rounded-4">
+                    <p class="m-0 py-2 text-center">{{ task.name }}</p>
+                    <h5 class="m-0 py-2">Description:</h5>
+                    <p class="m-0 py-2">{{ task.description }}</p>
+                    <div class="d-flex my-2 justify-content-around pb-4 align-items-center">
+                        <i class="fa-solid icon fa-check text-success bg-secondary-subtle rounded-pill"
+                            (click)="onMarkComplete(task._id)"></i>
+                        <i class="fa-solid icon-error fa-x text-danger bg-secondary-subtle rounded-pill"
+                            (click)="onDelete(task._id)"></i>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+
+    </div>
+
+</section>
